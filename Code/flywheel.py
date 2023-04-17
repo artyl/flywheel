@@ -2,13 +2,13 @@
 
 from data_level import DataOperations as dop
 from system_level import FileOperations as fop
-from ui_level import UiOperations as uop
+from ui_level import UiOperations
 
 phrases_file_name: str = 'phrases.txt'
 repetitions_file_name: str = 'repetitions.json'
 statistics_file_name: str = 'user_statistics.txt'
 
-if __name__ == '__main__':
+def main():
     phrases_file_path = fop.find_or_create_file(phrases_file_name)
     repetitions_file_path = fop.find_or_create_file(repetitions_file_name)
     user_statistics_file_path = fop.find_or_create_file(statistics_file_name)
@@ -18,6 +18,7 @@ if __name__ == '__main__':
     can_work, assesment_error_message = dop.data_assessment(phrases, repetitions)
 
     statistics: dict = fop.read_json_from_file(user_statistics_file_path)
+    uop = UiOperations()
 
     if can_work:
         is_merged, merge_message = dop.merge(phrases, repetitions)
@@ -37,3 +38,6 @@ if __name__ == '__main__':
     else:
         print(assesment_error_message)
         exit()
+
+if __name__ == '__main__':
+    main()
