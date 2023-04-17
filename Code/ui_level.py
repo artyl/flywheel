@@ -7,9 +7,10 @@ from data_level import DataOperations as dop
 
 class UiOperations:
     
-    def __init__(self, print_func=None, input_func=None):
+    def __init__(self, print_func=None, input_func=None, colorize='ansi'):
         self.print = print if print_func is None else print_func
-        self.input = input if print_func is None else input_func
+        self.input = input if input_func is None else input_func
+        self.colorize = colorize
     
     def user_session(self, phrase: str, repetition: dict) -> (float, str):
         """Console user interface"""
@@ -37,6 +38,11 @@ class UiOperations:
     
     def _print_colored_diff(self, correction, reference) -> None:
         """Visualisation of user errors"""
+        if self.colorize == 'md':
+            print(f'colored_diff:{correction}, {reference}')
+            res = ''.join([(r.lower() if c else r.upper()) for c,r in zip(correction, reference)])
+            self.print(res)
+            return
         for i, ch in enumerate(reference):
             if correction[i]:
                 self.print(Fore.GREEN + ch, end='')
